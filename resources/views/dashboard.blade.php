@@ -11,19 +11,36 @@
         <div style="width: 1450px; display:flex; justify-content: flex-end; margin-bottom: 15px;" >
              <form {{--action="dashboard/"--}} action="{{ route('dashboard') }}"> 
                 <div>
-                  <input type="search" name="search" placeholder="Search Aviaplanes.." />
+                  <input type="search" name="search" @if(isset($_GET['search'])) value="{{ $_GET['search'] }}" @endif  placeholder="Search Aviaplanes.." />
                     
                         <button type="submit">
                         Search
                         </button>
                 </div>
+                
               </form>
         </div>
 
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             
+            <p>Select Category:</p>
+            <form {{--action="dashboard/"--}} action="{{ route('dashboard') }}"> 
+               
+                <div style="width: 1450px; display:flex; align-items: center; justify-content: flex-start; margin-bottom: 15px;">
+                    
+                        <select name="filterCategoryId" class="block  py-3 px-3 mb-5 text-gray-800 appearance-none border-2 border-gray-100 focus:text-gray-500 focus:outline-none focus:border-gray-200 rounded-md" style="margin-bottom: 10px;">
+                                    <option value=""></option>
+                                @foreach ($categories as $category) 
+                                    <option value="{{  $category->id  }}" @if(isset($_GET['category_id'])) @if($_GET['category_id'] == $category->id) selected @endif @endif >{{  $category->title  }}</option>
+                                @endforeach
+                        </select>
+                    <button type="submit" class="bnt btn-primary" style="margin-left: 10px;">Submit</button>   
+                </div>
+            </form>
+            
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                
+                   
+
                 <div class="p-6 bg-white border-b border-gray-200">
                     @can('create', App\Models\Post::class)
             <div class="flex justify-end m-2 p-2">

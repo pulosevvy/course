@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Filters\PostFilter;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -16,12 +17,14 @@ class PostController extends Controller
         return view('posts.index', compact('posts'));
     }
 
-    public function showPost(Request $request) {
+    public function showPost(PostFilter $request) {
 
-        $posts = Post::with('category')->get();
+        $posts = Post::filter($request)->get();
+        $categories = Category::all();
 
-
-        return view('dashboard', ['posts' => Post::latest()->filter(request(['search']))->get()] , compact('posts'));
+        return view('dashboard', 
+            // ['posts' => Post::latest()->filter(request(['search']))->get()],
+         compact('posts', 'categories'));
     }
 
     public function create(Category $category, Post $post) {
