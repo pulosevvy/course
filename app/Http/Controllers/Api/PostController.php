@@ -43,6 +43,8 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
+        $this->authorize('create', Post::class);
+
         $post = Post::create($request->all());
 
         return response()->json([
@@ -83,6 +85,7 @@ class PostController extends Controller
      */
     public function update(StorePostRequest $request, Post $post)
     {
+        $this->authorize('update', $post);
         $post->update($request->all());
 
         return response()->json([
@@ -100,6 +103,8 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        $this->authorize('delete', $post);
+
         $post->delete();
 
         return response()->json([
