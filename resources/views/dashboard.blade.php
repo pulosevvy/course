@@ -86,7 +86,7 @@
                                     </th>
                                     
                                     <th scope="row" class="px-6 py-4 font-medium text-grey-900 dark:text-white whitespace-nowrap">
-                                        {{ $post->title }}
+                                       <a href="{{ route('detail', $post->id) }}">{{ $post->title }}</a> 
                                     </th>
 
                                     <th scope="row" class="px-6 py-4 font-medium text-grey-900 dark:text-white whitespace-nowrap">

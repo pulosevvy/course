@@ -23,15 +23,15 @@
                     </th>
 
                     <th scope="col" class="px-6 py-3">
-                        Category
-                    </th>
-
-                    <th scope="col" class="px-6 py-3">
                         Title
                     </th>
 
                     <th scope="col" class="px-6 py-3">
                         Body
+                    </th>
+
+                    <th scope="col" class="px-6 py-3">
+                        Category
                     </th>
 
 
@@ -49,18 +49,18 @@
                                 <th scope="row" class="px-6 py-4 font-medium text-grey-900 dark:text-white whitespace-nowrap">
                                     {{ $post->id }}
                                 </th>
-
-                                <th scope="row" class="px-6 py-4 font-medium text-grey-900 dark:text-white whitespace-nowrap">
-                                    {{ $post->category->title ?? 'no category'}}
-                                </th>
                                 
                                 <th scope="row" class="px-6 py-4 font-medium text-grey-900 dark:text-white whitespace-nowrap">
-                                    {{ $post->title }}
+                                    <a href="{{  route('detail', $post->id)  }}">{{ $post->title }}</a>
                                 </th>
 
                                 <th scope="row" class="px-6 py-4 font-medium text-grey-900 dark:text-white whitespace-nowrap">
                                     {{ $post->body }}
-                                </th>                               
+                                </th>
+                                
+                                <th scope="row" class="px-6 py-4 font-medium text-grey-900 dark:text-white whitespace-nowrap">
+                                    {{ $post->category->title ?? 'no category'}}
+                                </th>
 
                                 <td class="px-6 py-4 text-right">
                                     <div class="flex space-x-2">

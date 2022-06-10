@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use App\Models\Category;
+use App\Models\Comment;
 
+use App\Models\Category;
 use App\Filters\QueryFilter;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -18,6 +19,10 @@ class Post extends Model
     
     public function category() {
         return $this->BelongsTo(Category::class);
+    }
+
+    public function comments(){
+        return $this->hasMany(Comment::class);
     }
 
     // public function scopeFilter($query, array $filters) {

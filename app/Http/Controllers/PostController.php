@@ -27,6 +27,14 @@ class PostController extends Controller
          compact('posts', 'categories'));
     }
 
+    public function detail($post_id) {
+
+        // $posts = Post::findOrFail($post_id);
+        $posts = Post::find($post_id);
+
+        return view('posts.detail', compact('posts'));
+    }
+
     public function create(Category $category, Post $post) {
 
         $this->authorize('create', Post::class);
