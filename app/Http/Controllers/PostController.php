@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use App\Filters\PostFilter;
+use App\Models\User;
 use App\Models\Category;
+use App\Filters\PostFilter;
 use Illuminate\Http\Request;
 
 
@@ -27,12 +28,14 @@ class PostController extends Controller
          compact('posts', 'categories'));
     }
 
-    public function detail($post_id) {
+    public function detail($post_id, User $user) {
+
+        $user = User::all();
 
         // $posts = Post::findOrFail($post_id);
         $posts = Post::find($post_id);
 
-        return view('posts.detail', compact('posts'));
+        return view('posts.detail', compact('posts', 'user'));
     }
 
     public function create(Category $category, Post $post) {

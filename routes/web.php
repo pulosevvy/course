@@ -21,7 +21,14 @@ Route::get('/dashboard', [PostController::class, 'showPost'], function () {
 Route::resource('/posts', PostController::class);
 Route::get('/posts/{post}', [PostController::class, 'detail'])->name('detail');
 
-Route::post('/posts/{post}/comment', [CommentController::class, 'store'])->name('comment.store');
+Route::post('/posts/{id}/comment', [CommentController::class, 'store'])->name('comment.store');
+
+Route::delete('/posts/{id}/comment/{comm}/delete', [CommentController::class, 'delete'])->name('comment.delete');
+
+Route::get('/posts/{id}/comment/{comm}/edit', [CommentController::class, 'edit'])->name('comment.edit');
+
+Route::put('/posts/{id}/comment/{comm}/update', [CommentController::class, 'update'])->name('comment.update');
+
 
 Route::resource('/categories', CategoryController::class);
 

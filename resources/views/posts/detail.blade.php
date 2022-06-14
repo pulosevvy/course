@@ -117,20 +117,22 @@
                                 </th>
                                 
                                 <td class="px-6 py-4 text-right">
+                                    @if(Auth::check() && Auth::id() == $comment->user_id || auth()->user()->hasRole('admin'))
                                     <div class="flex space-x-2">
-                                       @can('update', $posts)
-                                       <a href="{{ route('posts.edit', $posts->id) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline" style="padding-right: 10px">Edit</a>
-                                       @endcan
-                                        @can('delete', $posts)
-                                       <form method="POST" action="{{ route('posts.destroy', $posts->id)}}">
+                                       
+                                        <a href="{{ route('comment.edit', ['id' => $posts->id, 'comm' => $comment->id])}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline" style="padding-right: 10px">Edit</a>
+                                       
+                                        <form method="POST" action="{{ route('comment.delete', ['id' => $posts->id, 'comm' => $comment->id]) }}">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="font-medium text-red-600 dark:text-red-500 hover:underline">
                                                 Delete
                                             </button>
                                         </form>    
-                                        @endcan
+                                        
                                     </div>
+                                    @endif
+
                                 </td>
                             </tr>
                             @endforeach
