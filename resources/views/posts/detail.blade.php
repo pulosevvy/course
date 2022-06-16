@@ -71,8 +71,6 @@
                                     </div>
                                 </td>
                             </tr>
-                        
-                        
                     </tbody>
                 </thead>
             </table>

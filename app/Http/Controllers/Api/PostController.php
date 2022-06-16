@@ -15,15 +15,26 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(PostFilter $request)
-    {
+
+    public function index(PostFilter $request) {
+        $posts = Post::with('comments.user')->get();
         $posts = Post::filter($request)->get();
 
         return response()->json([
             'status' => true,
-            'posts' => $posts
-        ]);
+            'posts' => $posts->toArray()
+        ], 200);
     }
+
+    // public function search(PostFilter $request)
+    // {
+    //     $posts = Post::filter($request)->get();
+
+    //     return response()->json([
+    //         'status' => true,
+    //         'posts' => $posts
+    //     ]);
+    // }
 
     /**
      * Show the form for creating a new resource.

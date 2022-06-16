@@ -1,9 +1,12 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\PostController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\Admin\RoleController;
+use App\Http\Controllers\Api\Admin\PermissionController;
+use App\Http\Controllers\Api\Admin\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +33,12 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('user', function(Request $request) {
         return $request->user();
     });
+    Route::apiResource('posts', PostController::class);
 });
 
-Route::apiResource('posts', PostController::class)->middleware('auth:sanctum');
+
+Route::middleware('auth:sanctum', 'role:admin')->prefix('/admin')->group(function() {
+    Route::apiResource('permissions', PermissionController::class);
+    Route::apiResource('roles', RoleController::class);
+    Route::apiResource('users', UserController::class);
+});
