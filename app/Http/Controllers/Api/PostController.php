@@ -7,6 +7,7 @@ use App\Filters\PostFilter;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostRequest;
+use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {
@@ -17,24 +18,13 @@ class PostController extends Controller
      */
 
     public function index(PostFilter $request) {
-        $posts = Post::with('comments.user')->get();
         $posts = Post::filter($request)->get();
 
         return response()->json([
             'status' => true,
-            'posts' => $posts->toArray()
+            'posts' => $posts
         ], 200);
     }
-
-    // public function search(PostFilter $request)
-    // {
-    //     $posts = Post::filter($request)->get();
-
-    //     return response()->json([
-    //         'status' => true,
-    //         'posts' => $posts
-    //     ]);
-    // }
 
     /**
      * Show the form for creating a new resource.
@@ -52,18 +42,43 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StorePostRequest $request)
+    public function store(Request $request)
     {
         $this->authorize('create', Post::class);
 
-        $post = Post::create($request->all());
+        try {
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Post Created',
-            'post' => $post
-        ], 200);
+            $validated = Validator::make($request->all(), 
+            [
+                'title' => 'required',
+                'body' => 'required'
+            ]);
+
+            if($validated->fails()){
+                return response()->json([
+                    'status' => false,
+                    'message' => 'validate error',
+                    'error' => $validated->errors()
+                ]);
+            }
+
+            $post = Post::create($request->all());
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Post Created',
+                'post' => $post
+            ], 200);
+
+        } catch(\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ]);
+        }
     }
+
+        
 
     /**
      * Display the specified resource.
@@ -73,7 +88,12 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        $post = Post::with('comments.user')->find($post);
+
+        return response()->json([
+            'status' => true,
+            'posts' => $post->toArray()
+        ], 200);
     }
 
     /**
@@ -94,16 +114,42 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(StorePostRequest $request, Post $post)
+    public function update(Request $request, Post $post)
     {
         $this->authorize('update', $post);
-        $post->update($request->all());
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Post Updated',
-            'posts' => $post
-        ], 200);
+        try {
+
+            $validated = Validator::make($request->all(),
+            [
+                'title' => 'required',
+                'body' => 'required'
+            ]);
+
+            if($validated->fails()) {
+                return response()->json([
+                    'status' => 'required',
+                    'message' => 'validate error',
+                    'error' => $validated->errors()
+                ]);
+            }
+
+            $post->update($request->all());
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Post Updated',
+                'posts' => $post
+            ], 200);
+
+        } catch(\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ]);
+        }
+
+        
     }
 
     /**

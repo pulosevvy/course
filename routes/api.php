@@ -4,9 +4,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\PostController;
+use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\Admin\RoleController;
-use App\Http\Controllers\Api\Admin\PermissionController;
 use App\Http\Controllers\Api\Admin\UserController;
+use App\Http\Controllers\Api\Admin\PermissionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +35,7 @@ Route::middleware('auth:sanctum')->group(function() {
         return $request->user();
     });
     Route::apiResource('posts', PostController::class);
+    Route::apiResource('category', CategoryController::class);
 });
 
 
