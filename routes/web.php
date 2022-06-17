@@ -18,19 +18,23 @@ Route::get('/dashboard', [PostController::class, 'showPost'], function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
+// Post
 Route::resource('/posts', PostController::class);
 Route::get('/posts/{post}', [PostController::class, 'detail'])->name('detail');
 
-Route::post('/posts/{id}/comment', [CommentController::class, 'store'])->name('comment.store');
-
-Route::delete('/posts/{id}/comment/{comm}/delete', [CommentController::class, 'delete'])->name('comment.delete');
-
-Route::get('/posts/{id}/comment/{comm}/edit', [CommentController::class, 'edit'])->name('comment.edit');
-
-Route::put('/posts/{id}/comment/{comm}/update', [CommentController::class, 'update'])->name('comment.update');
-
-
+// Category
 Route::resource('/categories', CategoryController::class);
+
+// Comment
+
+Route::controller(CommentController::class)->group(function() {
+    Route::post('/posts/{id}/comment', 'store')->name('comment.store');
+    Route::get('/posts/{id}/comment/{comm}/edit', 'edit')->name('comment.edit');
+    Route::put('/posts/{id}/comment/{comm}/update', 'update')->name('comment.update');
+    Route::delete('/posts/{id}/comment/{comm}/delete', 'delete')->name('comment.delete');
+});
+
+// Admin
 
 Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('/admin')->group(function() {
     Route::get('/', [AdminController::class, 'index'])->name('index');

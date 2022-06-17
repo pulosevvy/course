@@ -25,14 +25,14 @@ class UserController extends Controller
 
             $validated = Validator::make($request->all(), [
             'name' => 'required',
-            'email' => 'required'
+            'email' => 'required|email'
             ]);
 
             if($validated->fails()) {
                 return response()->json([
                     'status' => true,
                     'message' => 'validate error',
-                    'user' => $user
+                    'error' => $validated->errors()
                 ]);
             }
 
