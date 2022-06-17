@@ -26,7 +26,6 @@ Route::get('/posts/{post}', [PostController::class, 'detail'])->name('detail');
 Route::resource('/categories', CategoryController::class);
 
 // Comment
-
 Route::controller(CommentController::class)->group(function() {
     Route::post('/posts/{id}/comment', 'store')->name('comment.store');
     Route::get('/posts/{id}/comment/{comm}/edit', 'edit')->name('comment.edit');
@@ -35,7 +34,6 @@ Route::controller(CommentController::class)->group(function() {
 });
 
 // Admin
-
 Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('/admin')->group(function() {
     Route::get('/', [AdminController::class, 'index'])->name('index');
     Route::post('/roles/{role}/permissions', [RoleController::class, 'assignPermissions'])->name('roles.permissions');

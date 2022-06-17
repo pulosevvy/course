@@ -67,6 +67,7 @@ Route::middleware('auth:sanctum')->group(function() {
 Route::middleware('auth:sanctum', 'role:admin')->prefix('/admin')->group(function() {
     Route::apiResource('permissions', PermissionController::class);
     Route::apiResource('roles', RoleController::class);
+    Route::post('/roles/{role}/permissions', [RoleController::class, 'assignPermissions']);
     Route::apiResource('users', UserController::class);
 });
 

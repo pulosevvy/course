@@ -17,6 +17,15 @@ class RoleController extends Controller
         ]);
     }
 
+    public function show(Role $role) {
+        $role = Role::with('permissions')->find($role);
+
+        return response()->json([
+            'status' => true,
+            'roles' => $role->toArray()
+        ], 200);
+    }
+
     public function store(Request $request) { 
         $roles = Role::create($request->all());
 
@@ -47,13 +56,13 @@ class RoleController extends Controller
         ], 200);
     }
 
-//     public function assignPermission(Request $request, Role $role) {
-//         $role->permission()->sync($request->permission);
+    public function assignPermissions(Request $request, Role $role) {
+        $role->permissions()->sync($request->permission);
 
-//         return response()->json([
-//             'status' => true,
-//             'message' => 'assing ready',
-//             'role' => $role
-//         ]);
-//     }
+        return response()->json([
+            'status' => true,
+            'message' => 'assing ready',
+            'role' => $role
+        ]);
+    }
 }
